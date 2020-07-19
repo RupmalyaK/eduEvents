@@ -19,6 +19,8 @@ export const fetchEventsAsync = (date, time) => {
     return async dispatch => {
         dispatch(fetchEventsStart());
         try{
+            const accessToken = await auth.currentUser.getIdToken();
+          
             const {data:events} = await axios({
                 url:"/api/events",
                 method:"GET",
@@ -26,6 +28,9 @@ export const fetchEventsAsync = (date, time) => {
                   date:date.toDateString(),
                   time,
                 },
+                headers: {
+                    authorization:"Bearer " + accessToken,
+                }
             });
             dispatch(fetchEventsSuccess(events,date));
            }

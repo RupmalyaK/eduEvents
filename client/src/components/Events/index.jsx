@@ -250,7 +250,7 @@ const Events = props => {
         <motion.div className="content"  animate={contentControl}>
             {tasks.length === 0 ? (
             <div className="no-task">        
-            <span className="text">There is no task for this date</span>
+            <span className="text">{currentUser ? "There is no task for this date" : "Sign in to view tasks" }</span>
             {currentUser && currentUser.role === "teacher" ? <CustomPlus as={FontAwesomeIcon} icon={faPlus} onClick={handlePlusClick}/> : <></> }   
             </div>
             ):displayTasks()}

@@ -85,6 +85,7 @@ const Layout = (props) => {
     const handleSignOut = e => {
         dispatch(setSignOutBoxClose());
         dispatch(signOutAsync());
+        window.location.reload(false);
     };
     
     const handleSignOutCancel = e => {

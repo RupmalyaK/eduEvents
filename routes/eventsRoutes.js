@@ -6,7 +6,8 @@ import {isAuthenticated,limitRequestFromTheUser} from "../controller/authControl
 
 const eventsRoutes = (pathStr,app,admin) => {
    app.route(`${pathStr}/events`)
-   .get( async (req, res, next) => {
+   .get(isAuthenticated, async (req, res, next) => {
+    
         const date = new Date (req.query.date);
         try{
             const events = await EventModel.find({date}).sort({time:"asc"}).exec();
@@ -20,7 +21,7 @@ const eventsRoutes = (pathStr,app,admin) => {
             }
        
    })
-   .post(isAuthenticated, async (req, res,next) => {
+   .post(isAuthenticated,limitRequestFromTheUser, async (req, res,next) => {
      const {teacherId,task,taskTitle,time} = req.body;
      const date = new Date(req.body.date);
      const db = admin.firestore();
@@ -30,7 +31,7 @@ const eventsRoutes = (pathStr,app,admin) => {
         const userRef = await db.collection("users").doc(teacherId)
         const userDoc = await userRef.get();
         const {displayName, role} = userDoc.data(); 
-        if(task.length <= 20 || taskTitle != 5)
+        if(task.length <= 20 || taskTitle <= 5)
         {
             throw new Error("Invalid request data"); 
         }
@@ -49,6 +50,7 @@ const eventsRoutes = (pathStr,app,admin) => {
         });
         const events = await EventModel.find({date}).sort({time:"asc"}).exec();
         res.status(200).json(events);
+        delete global.teacherPostingTask[teacherId];
      }
      catch(error)
      {
@@ -62,6 +64,6 @@ const eventsRoutes = (pathStr,app,admin) => {
 
 export default eventsRoutes;
 
-/*(async () => {
+(async () => {
     await EventModel.deleteMany({});
-})();*/
+})();

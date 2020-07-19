@@ -1,6 +1,6 @@
 import admin from "firebase-admin"; 
 
-global.usersRequesting = {
+global.teacherPostingTask = {
 
 };
 
@@ -70,10 +70,10 @@ const getAuthToken = (req, res, next) => {
    };
 
    export const limitRequestFromTheUser = (req,res,next) => {
-    const {userObjectId} = req.body; 
-    if(!usersReviewing[userObjectId]) 
+    const {teacherId} = req.body; 
+    if(!usersReviewing[teacherId]) 
         {
-            usersReviewing[userObjectId] = true;
+          global.teacherPostingTask[teacherId] = true;
             next();
         }
         else{
