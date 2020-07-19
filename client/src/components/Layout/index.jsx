@@ -56,7 +56,7 @@ width:120px;
 position:absolute;
 bottom:0;
 display:flex;
-
+cursor:pointer;
 bottom:100px;
 margin:50px;
 justify-content:center;
@@ -98,6 +98,10 @@ const Layout = (props) => {
     const handleSignInClick = () => {
         history.push("/signinsignup");
     }
+
+    const handleLogoClick = () => {
+        history.push("/");
+    }
     return(
     <Container isBlurOn={isBlurOn}>
        
@@ -108,7 +112,7 @@ const Layout = (props) => {
                  <>
                  <Button onClick={handleSignOutButtonClick}>Sign Out</Button>
                 <div className="info">
-                    <LogoContainer>
+                    <LogoContainer onClick = {handleLogoClick}>
                          <img src={logo} alt="logo" /> 
                     </LogoContainer>
                     <span> <FontAwesomeIcon icon={faUser} /> {currentUser.displayName}</span>
@@ -117,7 +121,7 @@ const Layout = (props) => {
                 </div>
                 </>
                 :<> <Button onClick={handleSignInClick}>Let's sign in or sign up</Button>
-                     <LogoContainer>
+                     <LogoContainer onClick = {handleLogoClick}>
                          <img src={logo} alt="logo" /> 
                     </LogoContainer>   
                 </>  
