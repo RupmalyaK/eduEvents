@@ -1,5 +1,4 @@
 import EventModel from "../model/eventModel";
-import {} from "../controller/eventsController.js"
 import {isAuthenticated,limitRequestFromTheUser} from "../controller/authController.js";
 
 
@@ -55,7 +54,7 @@ const eventsRoutes = (pathStr,app,admin) => {
      catch(error)
      {
          res.status(500);
-         console.log(error);
+         delete global.teacherPostingTask[teacherId];
          next(error);      
      }
    });
@@ -64,6 +63,6 @@ const eventsRoutes = (pathStr,app,admin) => {
 
 export default eventsRoutes;
 
-(async () => {
+/*(async () => {
     await EventModel.deleteMany({});
-})();
+})();*/
