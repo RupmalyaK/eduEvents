@@ -2,7 +2,7 @@ import React, {useState, useEffect} from "react";
 import {useSelector,useDispatch} from "react-redux";
 import {selectIsBlurOn,selectIsSignOutBoxOpen} from "../../redux/system/system.selector";
 import {setSignOutBoxClose,setBlurOff,setPageYTop,setSignOutBoxOpen} from "../../redux/system/system.action.js";
-import {signOutAsync,} from "../../redux/user/user.action.js";
+import {signOut} from "../../redux/user/user.action.js";
 import {selectCurrentUser} from "../../redux/user/user.selector.js";
 import ConfirmationBox from "../ConfirmationPopup";
 import Button from "../CustomButton";
@@ -34,8 +34,8 @@ const Layout = (props) => {
 
     const handleSignOut = e => {
         dispatch(setSignOutBoxClose());
-        dispatch(signOutAsync());
-        window.location.reload(false);
+        dispatch(signOut());
+      //  window.location.reload(false);
     };
     
     const handleSignOutCancel = e => {

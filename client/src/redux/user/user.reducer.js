@@ -36,19 +36,14 @@ switch(type)
         case userActionTypes.SET_UNSUBSCRIBER:
             return {...state, unsubscriberFR:payLoad};
             
-        case userActionTypes.SIGN_OUT_START:
-             return {...state, isSigningOut:true};
-        case userActionTypes.SIGN_OUT_SUCCESS:
-             return {...state, isSigningOut:false, currentUser:null, };   
-        case userActionTypes.SIGN_OUT_FAILURE:
-             return {...state, isSigningOut:false, signOutError:payLoad};
-        case userActionTypes.SIGN_OUT_ERROR_CLEAR:
-            return {...state, signOutError:null};     
+        case userActionTypes.SIGN_OUT: 
+             return {...state, currentUser:null};
+          
         
         case userActionTypes.SIGN_UP_START: 
             return {...state, isSigningUp:true};
         case userActionTypes.SIGN_UP_SUCCESS:
-            return {...state, isSigningUp:false};
+            return {...state, isSigningUp:false,currentUser:payLoad};
         case userActionTypes.SIGN_UP_FAILURE:
             return {...state, isSigningUp:false, signUpError:payLoad};  
         case userActionTypes.SIGN_UP_ERROR_CLEAR:

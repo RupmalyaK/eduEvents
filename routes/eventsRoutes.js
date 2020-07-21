@@ -1,4 +1,4 @@
-import EventModel from "../model/eventModel";
+import EventModel from "../model/EventModel";
 import {isAuthenticated,limitRequestFromTheUser} from "../controller/authController.js";
 
 

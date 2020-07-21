@@ -1,4 +1,5 @@
-import admin from "firebase-admin"; 
+import jwt from "jsonwebtoken";
+import {check} from "express-validator";
 
 global.teacherPostingTask = {
 
@@ -25,50 +26,54 @@ const getAuthToken = (req, res, next) => {
     next();
   };
 
-  export const isAuthenticated = (req, res, next) => {
-    getAuthToken(req, res, async () => {
-       try {
-         const { authToken } = req;
-         if(authToken === null)
-          {
-            notAuthorizedErrorThrow(res);
-            return;
-          }
-         const userInfo = await admin
-           .auth()
-           .verifyIdToken(authToken);
-         req.authId = userInfo.uid;
-         return next();
-       } catch (e) { 
-        console.log(e);
-        notAuthorizedErrorThrow(res);
-        return;
+   export const isAuthenticated  = (req, res, next) => { 
+     getAuthToken(req, res, async () => {
+       try{
+          const user = await jwt.verify(req.token, process.env.JWT_SECRET);
+          req.user = user;
+          next();
        }
+       catch(error)
+        {
+          notAuthorizedErrorThrow(res);
+        }
      });
-   };
+   }
 
-   export const checkIfAdmin = (req, res, next) => {
-    getAuthToken(req, res, async () => {
-       try {
-         const { authToken } = req;
-         const userInfo = await admin
-           .auth()
-           .verifyIdToken(authToken);
-   
-         if (userInfo.admin === true) {
-           req.authId = userInfo.uid;
-           return next();
-         }
-   
-         throw new Error('unauthorized')
-       } catch (e) {
-         return res
-           .status(401)
-           .send({ error: 'You are not authorized to make this request' });
-       }
-     });
-   };
+   export const signUpValidationMiddlewaresArr = [
+    check("email").isEmail().withMessage("Must be a valid email address"),
+    
+    check("password")
+    .isLength({ min: 5}).withMessage("Password must be at least 5 character long")
+    .isLength({ max: 32}).withMessage("Password must be less than 32 characters long")
+    .matches(/\d/).withMessage('password must contain at least a single digit')
+    .matches(/[\W_]/).withMessage("password must contain at least a single special character"),
 
+    check("displayName")
+    .isLength({ min: 6}).withMessage("Display name must be at least 5 character long")
+    .isLength({ max: 32}).withMessage("Display name must be less than 32 characters long"),
+
+    check("role")
+    .matches(/^teacher$|^student$/i).withMessage("Role must be either student or teacher")
+ ]
+ /*   const authHeader = req.headers.authorization;
+
+    if (authHeader) {
+        const token = authHeader.split(' ')[1];
+
+        jwt.verify(token, accessTokenSecret, (err, user) => {
+            if (err) {
+                return res.sendStatus(403);
+            }
+
+            req.user = user;
+            next();
+        });
+    } else {
+        res.sendStatus(401);
+    }
+};
+*/
    export const limitRequestFromTheUser = (req,res,next) => {
     const {teacherId} = req.body; 
     if(!usersReviewing[teacherId]) 

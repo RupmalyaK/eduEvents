@@ -2,7 +2,7 @@
 import React, {useState,useEffect} from "react"; 
 import {useSelector , useDispatch} from "react-redux"; 
 import {selectSignUpError} from "../../redux/user/user.selector.js";
-import {signUpAsync,signOutAsync} from "../../redux/user/user.action.js";
+import {signUpAsync,signOut} from "../../redux/user/user.action.js";
 import {clearSignUpError} from "../../redux/user/user.action";
 import {useHistory} from "react-router-dom"; 
 import Button from "../CustomButton"; 
@@ -42,7 +42,7 @@ const roleChangeHandler = e => {
 }
 
 useEffect(() => {
-    dispatch(signOutAsync());
+    dispatch(signOut());
 if (signUpError)
     {
         alert(signUpError); 

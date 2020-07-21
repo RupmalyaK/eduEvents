@@ -35,7 +35,7 @@ const App = () => {
   
   
   useEffect(() => {
-    dispatch(checkSessionAsync());
+   // dispatch(checkSessionAsync());
     //toMongoDB();
     const handleUnmount = () => console.log("App unmounted"); 
     return handleUnmount; 
@@ -55,7 +55,7 @@ const App = () => {
       <div>
         <ThemeProvider theme={theme}>
             <GlobalStyle />
-            <LayoutWithLoadingSpinner isLoading={isSigningIn || isCheckingSession || isSigningUp || isFetchingEvents}>
+            <LayoutWithLoadingSpinner isLoading={isSigningIn ||/* isCheckingSession || **/isSigningUp || isFetchingEvents}>
                 <Switch>
                     <Route path='/' exact component={Homepage} />
                     <Route path="/signinsignup" exact render = {

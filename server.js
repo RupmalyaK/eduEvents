@@ -2,13 +2,10 @@ import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser"; 
 import path from "path";
-import Stripe from "stripe";
 import dotEnv from "dotenv";
 import mongoose from "mongoose";
-import fireBaseCred from "./fb_keys.json";
-;
-import admin from "firebase-admin";
 import eventsRoutes from "./routes/eventsRoutes.js";
+import authRoutes from "./routes/authRoutes.js";
 
 
 
@@ -16,12 +13,6 @@ if(process.env.NODE_ENV !== "production")
     {
         dotEnv.config(); 
     }
-
-//initializing firebase 
-admin.initializeApp({
-    credential: admin.credential.cert(fireBaseCred),
-    databaseURL: "https://react-rupkart-d6edf.firebaseio.com"
-    });
 
 
 
@@ -35,29 +26,9 @@ app.use(cors());
 
 
 /*EXPRESS ROUTES */
-eventsRoutes("/api", app, admin);
+authRoutes("/api/auth", app)
+eventsRoutes("/api/", app);
 
-/*STRIPE CONFIG*/
-const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
-
-const test = app.post("/api/payment" , (req, res) => { 
-    const {token,amount,description} = req.body; 
-    const body = {
-        source:token.id,
-        amount:amount,
-        description:description,
-        currency:"usd",
-    }
-
-    stripe.charges.create(body, (err , result) => {
-        if (err)
-            {
-                res.status(500).send({"error":err});
-                return;
-            }
-            res.status(200).send({"res":result}); 
-    });
-});
 
 /*PRODUCTION CONFIG*/
 

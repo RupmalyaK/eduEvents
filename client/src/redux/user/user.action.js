@@ -1,5 +1,6 @@
 import userActionTypes from "./user.types.js";
 import {auth,createUserProfileDoc} from "../../firebase/firebase.util.js";
+import axios from "axios";
 
 export const signInStart = () => {
     return {type:userActionTypes.SIGN_IN_START,         
@@ -20,7 +21,14 @@ export const signInUserWithEmailAndPasswordAsync = (email , password) => {
   return async (dispatch) => {
     dispatch(signInStart());
     try{
-    const currentUser = await auth.signInWithEmailAndPassword(email , password); 
+        const {data:currentUser} = await axios({
+            method:"POST",
+            url:"/api/auth/signin",
+            data:{
+                email,
+                password,
+            }
+        });
     dispatch(signInSuccess(currentUser));
     }
     catch(error)
@@ -84,38 +92,8 @@ export const checkSessionAsync = () => {
         }
 }
 
-export const signOutStart = () => {
-return {
-    type:userActionTypes.SIGN_OUT_START,
-}
-}
-
-export const signOutSuccess = data => {
-    return {
-        type:userActionTypes.SIGN_OUT_SUCCESS,
-        payLoad:data,
-    }
-}
-
-export const signOutFailure = error => {
-    return {
-        type:userActionTypes.SIGN_OUT_FAILURE,
-        payLoad:error,
-    };
-}
-
-export const signOutAsync = () => {
-    return async dispatch => {
-        dispatch(signOutStart());
-        try{
-        await auth.signOut();
-        dispatch(signOutSuccess());
-        }
-        catch(error)
-            {
-                dispatch(signOutFailure(error));
-            }
-    }
+export const signOut = () => {
+    return {type:userActionTypes.SIGN_OUT}
 }
 
 export const signUpStart = () =>
@@ -125,9 +103,10 @@ export const signUpStart = () =>
         };
     }
 
-export const signUpSuccess = () => {
+export const signUpSuccess = (currentUser) => {
     return {
         type:userActionTypes.SIGN_UP_SUCCESS,
+        payLoad:currentUser,
     };
 } 
 
@@ -141,17 +120,27 @@ export const signUpFailure = (error) => {
 export const signUpAsync = (userInfo) => {
     return async dispatch => {
             dispatch(signUpStart()); 
-            const {email ,password, displayName, user, role} = userInfo;
-           
+            const {email ,password, displayName, role} = userInfo;
             try{
-                const {user} = await auth.createUserWithEmailAndPassword(email , password);
-                await createUserProfileDoc(user , {displayName,role:role.toLowerCase()});
-                dispatch(signUpSuccess());
+                const {data:currentUser} = await axios({
+                    method:"POST",
+                    url:"/api/auth/signup",
+                    data:{
+                        email,
+                        password,
+                        displayName,
+                        role
+                    }
+                });
+                console.log("CHECK CURRENT USER", currentUser);
+                dispatch(signUpSuccess(currentUser));
             }
-            catch(error){
+            catch(error)
+            {
                 dispatch(signUpFailure(error));
             }
     }
+
 }
 
 
