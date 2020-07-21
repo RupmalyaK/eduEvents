@@ -27,7 +27,7 @@ app.use(cors());
 
 /*EXPRESS ROUTES */
 authRoutes("/api/auth", app)
-eventsRoutes("/api/", app);
+eventsRoutes("/api/events", app);
 
 
 /*PRODUCTION CONFIG*/

@@ -99,20 +99,20 @@ const Events = props => {
             <div className="events-header">
             <FontAwesomeIcon icon={faTasks} />
             <span className="date">{ date ? date.getDate() + '/' + date.getMonth() + '/' + date.getFullYear(): <></>}</span>
-            {tasks.length !== 0 && currentUser && currentUser.role === "teacher" ? <CustomPlus as={FontAwesomeIcon} icon={faPlus} onClick={handlePlusClick}/>  : <></> }
+            {tasks.length !== 0 && currentUser && currentUser.role.toLowerCase() === "teacher" ? <CustomPlus as={FontAwesomeIcon} icon={faPlus} onClick={handlePlusClick}/>  : <></> }
         </div>
         <motion.div className="content"  animate={contentControl}>
             {tasks.length === 0 ? (
             <div className="no-task">        
             <span className="text">{currentUser ? "There is no task for this date" : "Sign in to view tasks" }</span>
-            {currentUser && currentUser.role === "teacher" ? <CustomPlus as={FontAwesomeIcon} icon={faPlus} onClick={handlePlusClick}/> : <></> }   
+            {currentUser && currentUser.role.toLowerCase() === "teacher" ? <CustomPlus as={FontAwesomeIcon} icon={faPlus} onClick={handlePlusClick}/> : <></> }   
             </div>
             ):displayTasks()}
 
 
         </motion.div>
 
-       {currentUser && currentUser.role === "teacher" ? <EventForm initial={{y:"109%"}} animate={eventFormControl}>
+       {currentUser && currentUser.role.toLowerCase() === "teacher" ? <EventForm initial={{y:"109%"}} animate={eventFormControl}>
                     <FontAwesomeIcon icon={faCaretUp}/>
                     <h4>Post a new task</h4>
                     

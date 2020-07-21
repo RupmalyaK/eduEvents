@@ -1,10 +1,11 @@
 import EventModel from "../model/EventModel";
 import {isAuthenticated,limitRequestFromTheUser} from "../controller/authController.js";
+import UserModel from "../model/UserModel";
 
 
 
 const eventsRoutes = (pathStr,app,admin) => {
-   app.route(`${pathStr}/events`)
+   app.route(pathStr)
    .get(isAuthenticated, async (req, res, next) => {
     
         const date = new Date (req.query.date);
@@ -23,18 +24,14 @@ const eventsRoutes = (pathStr,app,admin) => {
    .post(isAuthenticated,limitRequestFromTheUser, async (req, res,next) => {
      const {teacherId,task,taskTitle,time} = req.body;
      const date = new Date(req.body.date);
-     const db = admin.firestore();
-     
-
      try{
-        const userRef = await db.collection("users").doc(teacherId)
-        const userDoc = await userRef.get();
-        const {displayName, role} = userDoc.data(); 
+        const user = await UserModel.findById(teacherId);
+        const {displayName, role} = user;
         if(task.length <= 20 || taskTitle <= 5)
         {
             throw new Error("Invalid request data"); 
         }
-        if(role !== "teacher")
+        if(role.toLowerCase() !== "teacher")
         {
             throw new Error("You are unauthorized to make this request"); 
         }
@@ -57,6 +54,13 @@ const eventsRoutes = (pathStr,app,admin) => {
          delete global.teacherPostingTask[teacherId];
          next(error);      
      }
+   });
+
+   app.route(pathStr + "/all")
+    .get(async (req,res) => {
+        console.log(hello);
+       const events = EventModel.find({});
+       res.status(200).json(events);
    });
 }
 

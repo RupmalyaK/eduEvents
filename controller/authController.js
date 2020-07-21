@@ -27,14 +27,16 @@ const getAuthToken = (req, res, next) => {
   };
 
    export const isAuthenticated  = (req, res, next) => { 
+    // console.log("HELLO");
      getAuthToken(req, res, async () => {
        try{
-          const user = await jwt.verify(req.token, process.env.JWT_SECRET);
+          const user = await jwt.verify(req.authToken, process.env.JWT_SECRET);
           req.user = user;
           next();
        }
        catch(error)
         {
+          console.log(error);
           notAuthorizedErrorThrow(res);
         }
      });
@@ -76,7 +78,7 @@ const getAuthToken = (req, res, next) => {
 */
    export const limitRequestFromTheUser = (req,res,next) => {
     const {teacherId} = req.body; 
-    if(!usersReviewing[teacherId]) 
+    if(!teacherPostingTask[teacherId]) 
         {
           global.teacherPostingTask[teacherId] = true;
             next();

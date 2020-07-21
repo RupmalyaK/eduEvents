@@ -16,10 +16,10 @@ const fetchEventsSuccess = (events,date) => {
 }
 
 export const fetchEventsAsync = (date, time) => {
-    return async dispatch => {
+    return async (dispatch, getState) => {
         dispatch(fetchEventsStart());
         try{
-            const accessToken = await auth.currentUser.getIdToken();
+            const accessToken = getState().user.currentUser.accessToken;
           
             const {data:events} = await axios({
                 url:"/api/events",
@@ -57,8 +57,8 @@ export const postTaskAsync =  (date, taskTitle, task, time) => {
     return async (dispatch,getState) => {
         dispatch(postTaskStart()); 
         try{
-            const accessToken = await auth.currentUser.getIdToken();
-            const teacherId = getState().user.currentUser.id; 
+            const accessToken = getState().user.currentUser.accessToken;
+            const teacherId = getState().user.currentUser._id; 
     
             const {data:tasks} = await axios(
                 {

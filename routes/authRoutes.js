@@ -14,6 +14,7 @@ const authRoutes = (pathStr,app) => {
 
    .post(signUpValidationMiddlewaresArr,async (req, res, next) => {
         const {email, password, displayName, role} = req.body;
+        console.log("HELLO");
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
           return res.status(400).json({ errors: errors.array() });
