@@ -38,3 +38,18 @@ export const CustomFormInput = styled(FormInput)`
 min-width:100%;
 margin-bottom:25px;
 `;
+
+export const Errors = styled.div`
+display:flex;
+flex-direction:column;
+margin-bottom:23px;
+color:orange;
+margin-left:10px;
+.heading{
+   font-size:1.2rem;
+   color:red;
+}
+.error{
+    margin-bottom:5px;
+}
+`;

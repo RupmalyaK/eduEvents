@@ -131,7 +131,7 @@ export const signUpAsync = (userInfo) => {
                         role
                     }
                 });
-                console.log("CHECK CURRENT USER", currentUser);
+             //   console.log("CHECK CURRENT USER", currentUser);
                 dispatch(signUpSuccess(currentUser));
             }
             catch(error)

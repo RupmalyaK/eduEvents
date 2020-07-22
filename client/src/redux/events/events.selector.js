@@ -9,6 +9,10 @@ export const selectIsFetchingEvents= createSelector(selectEvents , (events) => e
 
 export const selectFetchingEventsError = createSelector(selectEvents , (events) => events.fetchingEventsError);
 
+export const selectIsPostingTask = createSelector(selectEvents, event => event.isPostingTask);
+
+export const selectpostingTaskError  = createSelector(selectEvents, event => event.postingTaskError);
+
 export const selectDate = createSelector(selectEvents , (events) => events.date);
 
 

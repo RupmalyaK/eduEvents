@@ -31,8 +31,9 @@ eventsRoutes("/api/events", app);
 
 //Error Handling
 app.use(function (req, res) {
-    console.log(res.error);
-    res.status(500).send(res.error);
+    res.type('json');
+    console.log(res.errors);
+    res.status(400).send({errors:res.errors});
   })
 
 

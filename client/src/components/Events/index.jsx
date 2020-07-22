@@ -1,13 +1,17 @@
 import React, {useState, useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux"; 
-import {selectTasks,selectDate,selectIsFetchingEvents} from "../../redux/events/events.selector.js";
+import {selectTasks,selectDate,selectIsFetchingEvents,selectIsPostingTask} from "../../redux/events/events.selector.js";
 import {selectCurrentUser} from "../../redux/user/user.selector.js";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faTasks,faPlus,faCaretUp} from "@fortawesome/free-solid-svg-icons";
 import { motion, useAnimation} from "framer-motion";
 import {CustomPlus,Container} from "./style.jsx";
 import EventForm from "../EventForm";
+import Task from "../Task";
+import LoadingSpinner from "../LoadingSpinner";
+import {setBlurOff,setBlurOn} from "../../redux/system/system.action.js"
 
+const EventFormWithLoadingSpinner = LoadingSpinner(EventForm);
 
 
 
@@ -19,9 +23,19 @@ const Events = props => {
     const isFetchingEvents = useSelector(selectIsFetchingEvents);
     const currentUser = useSelector(selectCurrentUser);
     const dispatch = useDispatch(); 
+    const isPostingTask = useSelector(selectIsPostingTask);
 
 
-    
+  
+    useEffect(() => {
+        if(isPostingTask)
+            {
+                dispatch(setBlurOn());
+                return;
+            }
+            dispatch(setBlurOff());
+
+    },[isPostingTask]);
 
     const handlePlusClick = () => {
         if(!eventFormOpen)
@@ -36,16 +50,9 @@ const Events = props => {
   
      const displayTasks = () => {
         const TasksArr = tasks.map(task => {
+            const {title,task:text,displayName,time} = task;
         return(
-                <div className="task">
-                    <h4>{task.title}</h4>
-                    <p>{task.task}</p>
-                    <div className="task-footer">
-                        <span>{task.time}</span>
-                        <span><em>@{task.displayName}</em></span>
-                    </div>
-                    
-                </div>
+                <Task title={title} task={text} displayName={displayName} time={time} />
             );
        
         });
@@ -70,14 +77,17 @@ const Events = props => {
 
 
         </motion.div>
-
-       {currentUser && currentUser.role.toLowerCase() === "teacher" ? <EventForm isEventFormOpen={eventFormOpen}/>: <></>}
+                
+       {currentUser && currentUser.role.toLowerCase() === "teacher" ? <EventFormWithLoadingSpinner isLoading={isPostingTask} isEventFormOpen={eventFormOpen}/>: <></>}
         </>
          );
      }
+
+  
     return(
     
-        <Container isNoTask={tasks.length === 0}>   
+        <Container isNoTask={tasks.length === 0}> 
+
             {isFetchingEvents ? 
              < ></> : showWholeEvents()
             }

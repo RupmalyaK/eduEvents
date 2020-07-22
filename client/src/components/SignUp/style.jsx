@@ -6,15 +6,16 @@ export const Container = styled.div`
 display: flex;
 flex-direction: column;
 width: 500px;
-border:1px solid grey;
+border:2px solid ${props => props.theme.primaryBackgroundColor};
 padding:25px;
-border-radius:5%;
+color:${props => props.theme.primaryTextColor} !important;
 justify-content:center;
 
 `; 
 
 export const Title = styled.h2`
 margin: 10px 0;
+color:${props => props.theme.primaryBackgroundColor};
 `;
 
 

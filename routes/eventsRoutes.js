@@ -1,6 +1,7 @@
 import EventModel from "../model/EventModel";
 import {isAuthenticated,limitRequestFromTheUser} from "../controller/authController.js";
 import UserModel from "../model/UserModel";
+import { errors } from "stripe";
 
 
 
@@ -15,11 +16,8 @@ const eventsRoutes = (pathStr,app,admin) => {
         } 
         catch(error)
             {
-                res.status(500);
-                res.status(500);
                 res.error = error;
-                next();   
-                  
+                next();        
             }
        
    })
@@ -29,14 +27,26 @@ const eventsRoutes = (pathStr,app,admin) => {
      try{
         const user = await UserModel.findById(teacherId);
         const {displayName, role} = user;
-        if(task.length <= 20 || taskTitle <= 5)
+        const errorsArr = []; 
+
+        if(taskTitle <= 5 || taskTitle <=24)
+            {
+                errorsArr.push("Title must be between 5 to 13 characters"); 
+            }
+
+        if(task.length <= 20)
         {
-            throw new Error("Invalid request data"); 
+            errorsArr.push("Task must be between 10 to 120 characters"); 
         }
+        
         if(role.toLowerCase() !== "teacher")
         {
-            throw new Error("You are unauthorized to make this request"); 
+            errorsArr.push("You are unauthorized to make this request"); 
         }
+        if(errorsArr.length !== 0)
+            {
+                throw errorsArr;
+            }
 
         await EventModel.create({
             teacherId,
@@ -52,9 +62,8 @@ const eventsRoutes = (pathStr,app,admin) => {
      }
      catch(error)
      {
-         res.status(500);
          delete global.teacherPostingTask[teacherId];
-         res.error = error;
+         res.errors = error;
          next();   
            
      }

@@ -35,7 +35,7 @@ export const fetchEventsAsync = (date, time) => {
            }
         catch(error)
             {
-                dispatch(fetchEventsFailure(error))
+                dispatch(fetchEventsFailure(error.response.data.errors));
             }
     }
 }
@@ -79,7 +79,7 @@ export const postTaskAsync =  (date, taskTitle, task, time) => {
         }
         catch(error)
             {
-                dispatch(postTaskFailure(error)); 
+                dispatch(postTaskFailure(error.response.data.errors)); 
             }
     }
 }

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 import {useSelector, useDispatch} from "react-redux"; 
-import {selectTasks,selectDate,selectIsFetchingEvents} from "../../redux/events/events.selector.js";
+import {selectTasks,selectDate,selectIsFetchingEvents,selectpostingTaskError, selectIsPostingTask} from "../../redux/events/events.selector.js";
 import {selectCurrentUser} from "../../redux/user/user.selector.js";
 import {postTaskAsync} from "../../redux/events/events.actions.js";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -9,7 +9,7 @@ import { motion, useAnimation} from "framer-motion";
 import {Form} from "react-bootstrap";
 import Button from "../CustomButton";
 
-import {Container,CustomFormInput} from "./style.jsx";
+import {Container,CustomFormInput,Errors} from "./style.jsx";
 
 
 const EventForm = props => {
@@ -21,18 +21,20 @@ const EventForm = props => {
     const [eventFormOpen , setEventFormOpen] = useState(false);
     const dispatch = useDispatch(); 
     const date = useSelector(selectDate);
+    const postingTaskErrors = useSelector(selectpostingTaskError);
+   
 
     const maxLengthOfTextArea = 256;
 
     useEffect(() => {
-        if(isEventFormOpen)
+        if(isEventFormOpen || postingTaskErrors)
             {
                 openEventFormSequence();
                 return;
             }
             closeEventFormSequence();
 
-    },[isEventFormOpen]);
+    },[isEventFormOpen,postingTaskErrors]);
 
     const openEventFormSequence = async () => {
        await eventFormControl.start({ y:"20%", opacity:1, transition:{duration:0.4,ease: "easeInOut"} }); 
@@ -52,7 +54,6 @@ const EventForm = props => {
         dispatch(postTaskAsync(date,taskTitle, text,taskTime)); 
         if(taskTitle.length <= 5 || text.length <= 20 || !taskTime)
             {
-                alert("Error submitting task");
                 closeEventFormSequence();
                 return;
             }
@@ -62,16 +63,27 @@ const EventForm = props => {
         closeEventFormSequence();
     }
 
+
     const handleTaskCancel = e => {
         closeEventFormSequence();
     }
 
+    const displayErrors = () => {
+        const Errors = postingTaskErrors.map( error =>{
+            return (<span className="error">{error}</span>)
+        }
+        );
+        return Errors;
+    }
 
     return(
         <Container initial={{y:"109%"}} animate={eventFormControl}>
                     <FontAwesomeIcon icon={faCaretUp}/>
+                    {postingTaskErrors ? <Errors>
+                        <h6 className="heading">Error posting Task</h6>
+                        {displayErrors()} 
+                    </Errors>:<></>} 
                     <h4>Post a new task</h4>
-                    
                     <Form.Group controlId="writeTask" style={{marginTop:"10px",border:"5%"}}>
                             <CustomFormInput type="text" label="Title" value={taskTitle} setState={setTaskTitle}  required /> 
                             <Form.Label>Write the task (Limit:{maxLengthOfTextArea - text.length} more characters)</Form.Label>

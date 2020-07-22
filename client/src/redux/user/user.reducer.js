@@ -15,7 +15,7 @@ signOutError:null,
 
 const userReducer = (state = INITIAL_STATE , action) => {
 const {type , payLoad} = action; 
-console.log(state);
+//console.log(state);
 switch(type)
     {
         case userActionTypes.SIGN_IN_START: 

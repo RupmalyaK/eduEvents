@@ -7,15 +7,16 @@ width:500px;
 display:flex;
 flex-direction:column;
 //margin-left:20%;
-border:0.1px solid #D3D3D3;
+border:2px solid ${props => props.theme.secondaryBackgroundColor};
 padding:20px;
-border-radius:5%;
 z-index:25;
+color:${props => props.theme.primaryTextColor} !important;
 `;
 
 
 export const Title = styled.h2`
 margin: 10px 0px;
+color:${props => props.theme.secondaryBackgroundColor} !important;
 `;
 
 export const Form = styled.form`
