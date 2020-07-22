@@ -1,5 +1,4 @@
 import actionTypes from "./events.type.js";
-import {auth,getFirebaseUserById} from "../../firebase/firebase.util.js";
 import axios from "axios";
 
 

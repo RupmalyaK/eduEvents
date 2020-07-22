@@ -1,6 +1,5 @@
 import React, {useState, useEffect} from "react"; 
 import {useSelector} from "react-redux";
-import {signInWithGoogle} from "../../firebase/firebase.util.js"; 
 import { useDispatch} from "react-redux"; 
 import {signInUserWithEmailAndPasswordAsync, clearSignInError} from "../../redux/user/user.action";
 import {selectSignInError} from "../../redux/user/user.selector.js";

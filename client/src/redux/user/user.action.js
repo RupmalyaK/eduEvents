@@ -1,5 +1,4 @@
 import userActionTypes from "./user.types.js";
-import {auth,createUserProfileDoc} from "../../firebase/firebase.util.js";
 import axios from "axios";
 
 export const signInStart = () => {
@@ -66,7 +65,7 @@ export const setUnsubscriber = (unsubscriberFR) => {
     }
 }
 
-export const checkSessionAsync = () => { 
+/*export const checkSessionAsync = () => { 
     return async (dispatch) => {
         dispatch(checkSessionStart());
         let unsubscriber = null; 
@@ -91,7 +90,7 @@ export const checkSessionAsync = () => {
             dispatch(setUnsubscriber(unsubscriber))
         }
 }
-
+*/
 export const signOut = () => {
     return {type:userActionTypes.SIGN_OUT}
 }
