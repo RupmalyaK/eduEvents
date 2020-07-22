@@ -51,12 +51,12 @@ const authRoutes = (pathStr,app) => {
             const user = await UserModel.findOne({email});
             if(!user)
                 {
-                    throw new Error("User with that email does not exist");
+                    throw "User with that email does not exist";
                 }
            const isPasswordRight = await bcrypt.compare(password, user.password);
            if(!isPasswordRight)
             {
-                throw new Error("Wrong password");
+                throw "Wrong password";
             }     
             const doc = user._doc;
             const accessToken = await jwt.sign({ email,password},  process.env.JWT_SECRET,  {
@@ -69,7 +69,7 @@ const authRoutes = (pathStr,app) => {
         catch(error)
             {
                 res.status(500);
-                res.error = error;
+                res.errors = error;
                 next();   
              
             }

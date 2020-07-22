@@ -8,7 +8,7 @@ import { errors } from "stripe";
 const eventsRoutes = (pathStr,app,admin) => {
    app.route(pathStr)
    .get(isAuthenticated, async (req, res, next) => {
-    
+        
         const date = new Date (req.query.date);
         try{
             const events = await EventModel.find({date}).sort({time:"asc"}).exec();

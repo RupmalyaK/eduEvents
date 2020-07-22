@@ -24,7 +24,7 @@ const EventForm = props => {
     const postingTaskErrors = useSelector(selectpostingTaskError);
    
 
-    const maxLengthOfTextArea = 256;
+    const maxLengthOfTextArea = 120;
 
     useEffect(() => {
         if(isEventFormOpen || postingTaskErrors)
@@ -54,13 +54,12 @@ const EventForm = props => {
         dispatch(postTaskAsync(date,taskTitle, text,taskTime)); 
         if(taskTitle.length <= 5 || text.length <= 20 || !taskTime)
             {
-                closeEventFormSequence();
                 return;
             }
         setText("");
         setTaskTitle("");
         setTaskTime("");
-        closeEventFormSequence();
+
     }
 
 
@@ -87,7 +86,7 @@ const EventForm = props => {
                     <Form.Group controlId="writeTask" style={{marginTop:"10px",border:"5%"}}>
                             <CustomFormInput type="text" label="Title" value={taskTitle} setState={setTaskTitle}  required /> 
                             <Form.Label>Write the task (Limit:{maxLengthOfTextArea - text.length} more characters)</Form.Label>
-                            <Form.Control as="textarea" rows="3" maxLength={256}  onChange={handleWriteTask} style={{height:"200px",marginBottom:"50px"}} requited/>
+                            <Form.Control as="textarea" rows="3" maxLength={120}  onChange={handleWriteTask} style={{height:"200px",marginBottom:"50px"}} requited/>
                             <CustomFormInput type="time" label="Time" value={taskTime} setState={setTaskTime} required /> 
                             <div className="buttons" className="d-flex justify-content-center">
                                  <Button onClick= {handleTaskSubmit} style={{marginRight:"25px",width:"240px"}}>Post</Button>

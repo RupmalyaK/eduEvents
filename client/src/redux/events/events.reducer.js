@@ -11,7 +11,7 @@ const INITIAL_STATE = {
 
 const eventsReducer = (state = INITIAL_STATE, action) => {
     const {type, payLoad} = action; 
-    //console.log(state);
+    console.log(state);
     switch(type)
         {   
             case actionTypes.FETCH_EVENTS_START:

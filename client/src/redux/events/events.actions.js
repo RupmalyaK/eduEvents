@@ -35,7 +35,7 @@ export const fetchEventsAsync = (date, time) => {
            }
         catch(error)
             {
-                dispatch(fetchEventsFailure(error.response.data.errors));
+                dispatch(fetchEventsFailure(error));
             }
     }
 }

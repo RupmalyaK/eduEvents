@@ -46,7 +46,11 @@ margin-top:50px;
     }
    
 }
-
+.error{
+    color:orange;
+    transform:translateY(-200);
+    margin-bottom:40px;
+}
 `;
 
 export const CustomFormInput = styled(FormInput)`
@@ -68,4 +72,6 @@ margin-left:10px;
 flex-direction:column;
 
 `;
+
+
 

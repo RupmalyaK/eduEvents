@@ -37,7 +37,12 @@ const Events = props => {
 
     },[isPostingTask]);
 
+    useEffect(() => {
+      setEventFormOpen(false);
+    },[tasks]);
+
     const handlePlusClick = () => {
+
         if(!eventFormOpen)
             {
               setEventFormOpen(true); 
@@ -58,7 +63,7 @@ const Events = props => {
         });
         return TasksArr
      }
-    
+     console.log("IS EVENT FORM OPEN", eventFormOpen);
      const showWholeEvents = () => {
          return (
              <>

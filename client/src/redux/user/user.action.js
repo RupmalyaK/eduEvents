@@ -32,65 +32,14 @@ export const signInUserWithEmailAndPasswordAsync = (email , password) => {
     }
     catch(error)
     {
-        dispatch(signInFailure(error));
+        console.log(error.response.data.errors);
+        dispatch(signInFailure(error.response.data.errors));
     }
   }
 }
 
 
-export const checkSessionStart = () => { 
-    return {
-        type:userActionTypes.CHECK_SESSION_START,
-    };
-}
-export const checkSessionSuccess = (user) =>
-    {
-        return {
-            type:userActionTypes.CHECK_SESSION_SUCCESS,
-            payLoad:user
-        };
-    }
 
-export const checkSessionFailure = (error) => {
-    return {
-        type:userActionTypes.CHECK_SESSION_FAILURE,
-        sessionError:error,
-    }
-}    
-
-export const setUnsubscriber = (unsubscriberFR) => {
-    return {
-        type:userActionTypes.SET_UNSUBSCRIBER,
-        payLoad:unsubscriberFR,
-    }
-}
-
-/*export const checkSessionAsync = () => { 
-    return async (dispatch) => {
-        dispatch(checkSessionStart());
-        let unsubscriber = null; 
-        unsubscriber = auth.onAuthStateChanged(
-            async userAuth => {
-                if(userAuth)
-                {         
-                    const userRef = await createUserProfileDoc(userAuth);     
-                    userRef.onSnapshot(snapshot => { 
-                        dispatch(checkSessionSuccess({
-                        id:snapshot.id,
-                        ...snapshot.data()
-                        }, )); 
-                    });
-                    return;
-                }
-                 dispatch(checkSessionSuccess(null));   
-                return;
-                }
-            ); 
-
-            dispatch(setUnsubscriber(unsubscriber))
-        }
-}
-*/
 export const signOut = () => {
     return {type:userActionTypes.SIGN_OUT}
 }
@@ -131,12 +80,12 @@ export const signUpAsync = (userInfo) => {
                         role
                     }
                 });
-             //   console.log("CHECK CURRENT USER", currentUser);
+            
                 dispatch(signUpSuccess(currentUser));
             }
             catch(error)
-            {
-                dispatch(signUpFailure(error));
+            {   console.log(error.response.data.errors)
+                dispatch(signUpFailure(error.response.data.errors));
             }
     }
 

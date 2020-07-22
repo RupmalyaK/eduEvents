@@ -6,7 +6,7 @@ import {signUpAsync,signOut} from "../../redux/user/user.action.js";
 import {clearSignUpError} from "../../redux/user/user.action";
 import {useHistory} from "react-router-dom"; 
 import Button from "../CustomButton"; 
-import {Container,Title,CustomForm, CustomFormInput,CustomRadioButton,RadioButtons} from "./style.jsx";
+import {Container,Title,CustomForm, CustomFormInput,CustomRadioButton,RadioButtons,Errors} from "./style.jsx";
 
 
 
@@ -17,20 +17,25 @@ const [email , setEmail] = useState('');
 const [role,setRole] = useState("Student");
 const [password , setPassword] = useState('');
 const [confirmPassword , setConfirmPassword] = useState('');
-const signUpError = useSelector(selectSignUpError); 
+const signUpErrors = useSelector(selectSignUpError); 
+const [emailError, setEmailError] = useState(null);
+const [displayNameError,setDisplayNameError] = useState(null);
+const [passwordError, setPasswordError] = useState(null);
+const [confirmPasswordError, setConfirmPasswordError] = useState(null); 
+
 const history = useHistory();
 const dispatch = useDispatch();
 
 const handleSubmit = async (e) => {
     if (password !== confirmPassword)
     {
-        alert("Password and Confirm password didn't match");
+        setConfirmPasswordError("Confirm password didn't match");
         return; 
     }
+       dispatch(clearSignUpError());
        dispatch(signUpAsync({
             displayName, email, password, confirmPassword, role,
         }));
-        history.push('/');
         setDisplayName('');
         setEmail('');
         setPassword('');
@@ -41,28 +46,65 @@ const roleChangeHandler = e => {
     setRole(e.target.value);
 }
 
+
+console.log(emailError,displayNameError,passwordError);
+
+/**signUpErrors.forEach( error =>{
+      switch(error.param)
+        {
+            case "email":
+                setEmailError(error.msg);
+                break;
+            case "displayName":
+                setDisplayName(error.msg);
+                break;
+            case "password":
+                setPasswordError(error.msg);             
+        }
+    }
+    );
+} */
 useEffect(() => {
-    dispatch(signOut());
-if (signUpError)
-    {
-        alert(signUpError); 
-        dispatch(clearSignUpError());   
-    }    
-},[signUpError]);
+    if(!signUpErrors)
+        {
+            return;
+        }
+    signUpErrors.forEach( error =>{
+        switch(error.param)
+          {
+              case "email":
+                  setEmailError(error.msg);
+                  break;
+              case "displayName":
+                  setDisplayNameError(error.msg);
+                  break;
+              case "password":
+                  setPasswordError(error.msg);             
+          }
+      }
+      );
+},[signUpErrors]);
+
 return(
 <Container>
     <Title>I don't have an account</Title>
     <span>let's create one</span>
     <CustomForm>
+         {displayNameError ? <span className="error">{displayNameError}</span>:<></>}
         <div className="input">
+             
              <CustomFormInput type="text" label="Display name" value={displayName} setState={setDisplayName} required />
         </div>
+        {emailError ? <span className="error">{emailError}</span>:<></>} 
         <div className="input">
+             
               <CustomFormInput type="email" label="Email" value={email} setState={setEmail} required />  
         </div>
+        {passwordError ? <span className="error">{passwordError}</span>:<></>} 
         <div className="input">
                <CustomFormInput type="password" label="Password" value={password} setState={setPassword} required />
         </div>
+        {confirmPasswordError ? <span className="error">{confirmPasswordError}</span>:<></>} 
         <div className="input">
                <CustomFormInput type="password" label="Confirm password" value={confirmPassword} setState={setConfirmPassword} required />
         </div>

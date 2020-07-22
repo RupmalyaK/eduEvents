@@ -25,19 +25,13 @@ const history = useHistory();
 
 const handleSubmit = async (e) => { 
         e.preventDefault(); 
+        dispatch(clearSignInError());
         dispatch(signInUserWithEmailAndPasswordAsync(email , password));
         history.push('/');
         setEmail('');
         setPassword(''); 
 }
 
-useEffect(() => {
-        if(signInError)
-            {
-                alert(signInError);
-            }
-        dispatch(clearSignInError());
-} , []);
 
 
 
@@ -45,6 +39,7 @@ return(
 <Container>
     <Title>I already have an account</Title>
     <span>let's sign in with email and password</span>
+    {signInError ? <span className="error" style={{color:"orange"}}>Error: {signInError}</span>:<></>}
     <Form>
         <FormInput name="email" type="email" value={email} label="Email" setState={setEmail} required className="mt-5"/>
         <FormInput name="password" type="password" value={password} label="Password" setState={setPassword} required className="mt-5 mb-5"/>
