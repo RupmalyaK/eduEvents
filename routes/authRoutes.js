@@ -39,8 +39,8 @@ const authRoutes = (pathStr,app) => {
         catch(error)
             {
                 res.status(500);
-                console.log(error);
-                next(error);   
+                res.error = error;
+                next();   
             }
    });
 
@@ -69,8 +69,9 @@ const authRoutes = (pathStr,app) => {
         catch(error)
             {
                 res.status(500);
-                console.log(error);
-                next(error); 
+                res.error = error;
+                next();   
+             
             }
    });
 }

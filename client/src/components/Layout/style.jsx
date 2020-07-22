@@ -25,14 +25,14 @@ overflow:hidden;
 export const Header = styled.div`
 width:300px;
 height:100vh;
-background:${props => props.theme.alternateBackgroundColor};
+background:${props => props.theme.primaryTextColor};
 position:fixed;
 left:0;
 
 
 .info{
     font-size:1rem;
-    color:${props => props.theme.secondaryTextColor};
+    color:${props => props.theme.alternateTextColor};
     padding-left:10px;
     margin-top:200px;
 }

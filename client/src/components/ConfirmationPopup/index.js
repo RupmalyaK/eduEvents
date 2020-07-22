@@ -46,11 +46,11 @@ width:90%;
 `;
 
 const ConfirmButton = styled(CustomButton)`
-background:${props => props.theme.secondaryButtonColor};
+background:${props => props.theme.secondaryBackgroundColor};
 `;
 
 const CancelButton = styled(CustomButton)`
-background:${props => props.theme.primaryButtonColor};
+background:${props => props.theme.alternateBackgroundColor};
 `;
 
 const ConfirmationPopup = (props) => {

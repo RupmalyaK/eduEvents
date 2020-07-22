@@ -16,8 +16,10 @@ const eventsRoutes = (pathStr,app,admin) => {
         catch(error)
             {
                 res.status(500);
-                console.log(error);
-                next(error);      
+                res.status(500);
+                res.error = error;
+                next();   
+                  
             }
        
    })
@@ -52,7 +54,9 @@ const eventsRoutes = (pathStr,app,admin) => {
      {
          res.status(500);
          delete global.teacherPostingTask[teacherId];
-         next(error);      
+         res.error = error;
+         next();   
+           
      }
    });
 

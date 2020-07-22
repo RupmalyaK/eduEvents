@@ -29,6 +29,12 @@ app.use(cors());
 authRoutes("/api/auth", app)
 eventsRoutes("/api/events", app);
 
+//Error Handling
+app.use(function (req, res) {
+    console.log(res.error);
+    res.status(500).send(res.error);
+  })
+
 
 /*PRODUCTION CONFIG*/
 

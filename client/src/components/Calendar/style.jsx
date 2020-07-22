@@ -7,13 +7,20 @@ export const Container = styled.div`
   min-height:100%;
 
   .react-calendar__navigation {
-   margin-bottom:100px;
+   padding-bottom:150px;
+   padding-top:50px;
    font-size:2rem;
+   background:${props => props.theme.secondaryBackgroundColor} !important;
+   border-left:none;
+   outline:none;
   }
 }
 
-.title{
-  background:pink;
+.react-calendar__tile--now{
+ background:${props => props.theme.primaryBackgroundColor} !important;
+}
+.react-calendar__tile--active {
+  background:${props => props.theme.secondaryBackgroundColor} !important;
 }
 
 .button{

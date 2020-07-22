@@ -92,56 +92,22 @@ background:${props => props.theme.secondaryBackgroundColor};
 }
 `;
 
-export const EventForm = styled(motion.div)`
-width:100%;
-height:90%;
-background:${props => props.theme.secondaryBackgroundColor};
-position:absolute;
-z-index:90;
-display:flex;
-flex-direction:column;
-padding:20px 20px;
 
-
-.fa-caret-up{
-    font-size:5rem;
-    width:75px;
-    height:75px;
-    padding:0;
-   position:absolute;
-   top:-5%;
-   left:45%;
-   color:${props => props.theme.secondaryBackgroundColor};
-}
-
-h4{
-    align-self:center;
-    margin-bottom:10%;
-    color:${props => props.theme.primaryTextColor}
-   
-}
-
-
-`;
 
 export const CustomPlus = styled.div`
-    font-size:4rem;
+    font-size:1rem;
     background:${props => props.theme.primaryButtonColor};
-    padding:10px;
+    padding:5px;
     border-radius:100%;
-    display:flex;
+   display:flex;
     align-items:center;
     justify-content:center;
-    width:50px;
-    height:50px;
+    width:25px !important;
+    height:25px;
     cursor:pointer;
-    color:${props => props.theme.secondaryButtonColor};
+    color:${props => props.theme.primaryTextColor};
     opacity:80%;
     &:hover{
         opacity:100%;
     }
 `
-export const CustomFormInput = styled(FormInput)`
-min-width:100%;
-margin-bottom:25px;
-`;
