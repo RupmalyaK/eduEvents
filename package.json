@@ -10,9 +10,10 @@
     "server": "nodemon --exec babel-node server.js",
     "build": "cd client && npm run build",
     "dev": "concurrently --kill-others-on-fail \"npm run server\" \"npm run client\"",
-    "start": "concurrently --kill-others-on-fail \"npm run server\"",
+    "start": "babel-node server.js",
     "heroku-prebuild": "rm -rf node_modules",
-    "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
+    "heroku-postbuild": "cd client && npm install && npm install --only=dev --no-shrinkwrap && npm run build",
+  
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
