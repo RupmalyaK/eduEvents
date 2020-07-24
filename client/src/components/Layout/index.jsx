@@ -4,6 +4,7 @@ import {selectIsBlurOn,selectIsSignOutBoxOpen} from "../../redux/system/system.s
 import {setSignOutBoxClose,setBlurOff,setPageYTop,setSignOutBoxOpen} from "../../redux/system/system.action.js";
 import {signOut} from "../../redux/user/user.action.js";
 import {selectCurrentUser} from "../../redux/user/user.selector.js";
+import {clearTasks} from "../../redux/events/events.actions.js";
 import ConfirmationBox from "../ConfirmationPopup";
 import Button from "../CustomButton";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
@@ -35,7 +36,8 @@ const Layout = (props) => {
     const handleSignOut = e => {
         dispatch(setSignOutBoxClose());
         dispatch(signOut());
-      //  window.location.reload(false);
+        dispatch(clearTasks());
+     
     };
     
     const handleSignOutCancel = e => {

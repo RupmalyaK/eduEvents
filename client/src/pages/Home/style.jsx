@@ -10,7 +10,7 @@ margin-left:300px;
 
 .calendar-and-events{
   display:flex;
-  height:1000px;
+  height:90vh;
   box-shadow:3px 3px 5px 6px #ccc;
 }
 `;

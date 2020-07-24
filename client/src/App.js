@@ -13,14 +13,7 @@ import {ThemeProvider} from "styled-components";
 import SignInSignUpPage from "./pages/SignInAndSIgnUp";
 import { selectIsFetchingEvents } from "./redux/events/events.selector.js";
 
-//import {toMongoDB} from "./util.js";
-
-
-
 const LayoutWithLoadingSpinner = LoadingSpinner(Layout);
-
-
-
 
 const App = () => {
   const isCheckingSession = useSelector(selectIsCheckingSession);
@@ -35,8 +28,6 @@ const App = () => {
   
   
   useEffect(() => {
-   // dispatch(checkSessionAsync());
-    //toMongoDB();
     const handleUnmount = () => console.log("App unmounted"); 
     return handleUnmount; 
   },[]);

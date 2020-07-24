@@ -28,7 +28,10 @@ const eventsReducer = (state = INITIAL_STATE, action) => {
                     return {...state, isPostingTask:false , postingTaskError:payLoad};
             case actionTypes.POST_TASK_SUCCESS:
                       const {tasks:newTasks, date:newDate}  = payLoad; 
-                      return {...state,isPostingTask:false, postingTaskError:null,tasks:newTasks, date:newDate};                        
+                      return {...state,isPostingTask:false, postingTaskError:null,tasks:newTasks, date:newDate};   
+                      
+             case actionTypes.CLEAR_TASK:
+                        return{...state,tasks:[]};         
             default: return state;
         }
 }

@@ -83,3 +83,8 @@ export const postTaskAsync =  (date, taskTitle, task, time) => {
             }
     }
 }
+
+
+export const clearTasks = () => {
+    return {type:actionTypes.CLEAR_TASK};
+}
