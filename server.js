@@ -24,6 +24,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({"extended":true}));
 app.use(cors());
 
+/*PRODUCTION CONFIG*/
+
+if(process.env.NODE_ENV ==="production")
+    {   
+        app.use(express.static(path.join(__dirname, "client/build")));
+
+       app.get('/', (req, res) => {
+            res.sendFile(path.join(__dirname, "client/build" , "index.html"));
+        });
+    }
 
 /*EXPRESS ROUTES */
 authRoutes("/api/auth", app)
@@ -36,17 +46,6 @@ app.use(function (req, res) {
     res.status(400).send({errors:res.errors});
   })
 
-
-/*PRODUCTION CONFIG*/
-
-if(process.env.NODE_ENV ==="production")
-    {   
-        app.use(express.static(path.join(__dirname, "client/build")));
-
-       app.get('/', (req, res) => {
-            res.sendFile(path.join(__dirname, "client/build" , "index.html"));
-        });
-    }
 
 /*STARTING APP*/    
 app.listen(port , err => {
