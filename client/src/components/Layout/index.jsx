@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from "react"; 
-import {useSelector,useDispatch} from "react-redux";
+import React, {Component} from "react"; 
+import {connect} from "react-redux";
 import {selectIsBlurOn,selectIsSignOutBoxOpen} from "../../redux/system/system.selector";
 import {setSignOutBoxClose,setBlurOff,setPageYTop,setSignOutBoxOpen} from "../../redux/system/system.action.js";
 import {signOut} from "../../redux/user/user.action.js";
@@ -9,83 +9,108 @@ import ConfirmationBox from "../ConfirmationPopup";
 import Button from "../CustomButton";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faUser} from "@fortawesome/free-solid-svg-icons";
-import {useHistory} from "react-router-dom";
+import {withRouter} from "react-router-dom";
 import logo from "../../images/logo.png";
 import {Container,Header,LogoContainer} from "./style.jsx";
 
 
+class Layout extends Component {
+constructor(props)
+    {
+        super(props);
+        window.addEventListener("scroll", this.scrollhandler);
+    }
 
-const Layout = (props) => {
-    const isBlurOn = useSelector(selectIsBlurOn);
-    const isSignOutBoxOpen = useSelector(selectIsSignOutBoxOpen);
-    const currentUser = useSelector(selectCurrentUser);
-    const dispatch = useDispatch();
-    const history = useHistory();
-    const scrollhandler = (e) => {
-        dispatch(setPageYTop(window.pageYOffset))
+    scrollhandler = (e) => {
+        setPageYTop(window.pageYOffset);
        }
-    useEffect(() => {
-        window.addEventListener("scroll", scrollhandler);
 
-        const unmountHandler = () => {
-            window.removeEventListener("scroll",scrollhandler);
-        }
-        return unmountHandler;
-    },[]);
-
-    const handleSignOut = e => {
-        dispatch(setSignOutBoxClose());
-        dispatch(signOut());
-        dispatch(clearTasks());
-     
+  
+    handleSignOut = e => {
+        const {setSignOutBoxClose,signOut,clearTasks} = this.props;
+        setSignOutBoxClose();
+        signOut();
+        clearTasks();
     };
     
-    const handleSignOutCancel = e => {
-        dispatch(setSignOutBoxClose());
+    handleSignOutCancel = e => {
+        this.props.setSignOutBoxClose();
     }; 
     
-    const handleSignOutButtonClick = () => {
-        dispatch(setSignOutBoxOpen());
+    handleSignOutButtonClick = () => {
+        this.props.setSignOutBoxOpen();
     }
 
-    const handleSignInClick = () => {
-        history.push("/signinsignup");
+    handleSignInClick = () => {
+     this.props.history.push("/signinsignup");
     }
 
-    const handleLogoClick = () => {
-        history.push("/");
-    }
-    return(
-    <Container isBlurOn={isBlurOn}>
-       
-       { isSignOutBoxOpen ? <ConfirmationBox text="Do you want to sign out?" confirmHandler={handleSignOut} cancelHandler={handleSignOutCancel} /> : "" }
-        <Header>
+    handleLogoClick = () => {
+       this.props.history.push("/");
+    }   
+
+    componentWillUnmount()
+        {
+          window.removeEventListener("scroll",this.scrollhandler);
+        }
         
-           {currentUser ? 
-                 <>
-                 <Button onClick={handleSignOutButtonClick}>Sign Out</Button>
-                <div className="info">
-                    <LogoContainer onClick = {handleLogoClick}>
-                         <img src={logo} alt="logo" /> 
-                    </LogoContainer>
-                    <span> <FontAwesomeIcon icon={faUser} /> {currentUser.displayName}</span>
-                    <hr/>
-                    <p>{currentUser.role ?  currentUser.role.toUpperCase() : ""}</p>
-                </div>
-                </>
-                :<> <Button onClick={handleSignInClick}>Let's sign in or sign up</Button>
-                     <LogoContainer onClick = {handleLogoClick}>
-                         <img src={logo} alt="logo" /> 
-                    </LogoContainer>   
-                </>  
-            }  
-         </Header>   
-        <div className="children-wrapper">
-            {props.children}    
-        </div>    
-    </Container>);
-    
+        
+        render() 
+            {
+                const {isBlurOn,isSignOutBoxOpen,currentUser,children} = this.props;
+                return(
+                    <Container isBlurOn={isBlurOn}>
+                        
+                        { isSignOutBoxOpen ? <ConfirmationBox text="Do you want to sign out?" confirmHandler={this.handleSignOut} cancelHandler={this.handleSignOutCancel} /> : "" }
+                        <Header>
+                        
+                            {currentUser ? 
+                                    <>
+                                    <Button onClick={this.handleSignOutButtonClick}>Sign Out</Button>
+                                <div className="info">
+                                    <LogoContainer onClick = {this.handleLogoClick}>
+                                            <img src={logo} alt="logo" /> 
+                                    </LogoContainer>
+                                    <span> <FontAwesomeIcon icon={faUser} /> {currentUser.displayName}</span>
+                                    <hr/>
+                                    <p>{currentUser.role ?  currentUser.role.toUpperCase() : ""}</p>
+                                </div>
+                                </>
+                                :<> <Button onClick={this.handleSignInClick}>Let's sign in or sign up</Button>
+                                        <LogoContainer onClick = {this.handleLogoClick}>
+                                            <img src={logo} alt="logo" /> 
+                                    </LogoContainer>   
+                                </>  
+                            }  
+                            </Header>   
+                        <div className="children-wrapper">
+                            {children}    
+                        </div>    
+                    </Container>);
+                    
+            }
+}
+
+const mapStateToProps = state => {
+    return {
+        isBlurOn:selectIsBlurOn(state),
+        isSignOutBoxOpen:selectIsSignOutBoxOpen(state),
+        currentUser:selectCurrentUser(state),
+    }
 }
 
 
-export default Layout; 
+const mapDispatchToState = dispatch => {
+    return {
+        setSignOutBoxOpen:() => dispatch(setSignOutBoxOpen()),
+        setSignOutBoxClose:() => dispatch(setSignOutBoxClose()),
+        setPageYTop:yOffset => dispatch(setPageYTop(yOffset)),
+        setBlurOff:() => dispatch(setBlurOff()),
+        signOut:() => dispatch(signOut()),
+        clearTasks:() => dispatch(clearTasks())
+    }
+
+}
+
+const LayoutWithRouter = withRouter(Layout);
+export default connect(mapStateToProps,mapDispatchToState)(LayoutWithRouter);

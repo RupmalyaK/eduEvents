@@ -17,10 +17,12 @@ export const toggleBlur = () => {
 }
 
 export const setBlurOn = () => {
+   
     return {type:actionTypes.SET_BLUR_ON};
 }
 
 export const setBlurOff = () => {
+    
     return {type:actionTypes.SET_BLUR_OFF};
 }
 

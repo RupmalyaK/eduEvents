@@ -101,6 +101,7 @@ export const clearSignUpError = () => {
 }
 
 export const clearSignOutError = () => {
+    
     return {type:userActionTypes.SIGN_OUT_ERROR_CLEAR};
 }
 

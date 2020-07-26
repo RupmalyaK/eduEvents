@@ -11,7 +11,7 @@ export const selectFetchingEventsError = createSelector(selectEvents , (events) 
 
 export const selectIsPostingTask = createSelector(selectEvents, event => event.isPostingTask);
 
-export const selectpostingTaskError  = createSelector(selectEvents, event => event.postingTaskError);
+export const selectPostingTaskError  = createSelector(selectEvents, event => event.postingTaskError);
 
 export const selectDate = createSelector(selectEvents , (events) => events.date);
 

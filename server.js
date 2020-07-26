@@ -14,9 +14,6 @@ if(process.env.NODE_ENV !== "production")
         dotEnv.config(); 
     }
 
-
-
-
 const app = express(); 
 const port = process.env.PORT || 5000; 
 

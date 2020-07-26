@@ -1,32 +1,49 @@
-import React, { useState, useEffect } from 'react';
+import React, { Component} from 'react';
 import Cal from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import {fetchEventsAsync} from "../../redux/events/events.actions.js";
-import {useDispatch} from "react-redux";
+import {useDispatch,connect} from "react-redux";
 import {Container} from "./style.jsx";
 
-
-
-
-const Calendar = () => {
- const [date, setDate] = useState(new Date(Date.now()));
- const dispatch = useDispatch(); 
-  useEffect(() => {
-    dispatch(fetchEventsAsync(date));
-  },[]);
-  const handleChange = date => {
-    setDate(date);
-    dispatch(fetchEventsAsync(date));
+class Calendar extends Component {
+  state = {
+    date:new Date(Date.now()),
   }
-    return (
+
+  constructor(props){
+    super(props);
+    const {fetchEvents} = props;
+    fetchEvents(this.state.date);
+  }
+
+  handleChange = (date,fetchEvents) => {
+    this.setState({date});
+    fetchEvents(date);
+  }
+
+  render()
+    {
+      const {fetchEvents} = this.props;
+      return(
       <Container>
         <Cal
-          onChange={handleChange}
-          value={date}
+          onChange={date => this.handleChange(date,fetchEvents)}
+          value={this.date}
           className="cal-wrapper"
         />
       </Container>
-    );
+      );
+    }
+
 }
 
-export default Calendar;
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchEvents: date => {
+      dispatch(fetchEventsAsync(date))
+    }
+  };
+}
+
+
+export default connect(null,mapDispatchToProps)(Calendar);

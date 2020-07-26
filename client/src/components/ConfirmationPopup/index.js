@@ -1,6 +1,6 @@
-import React, {useEffect} from "react";
+import React, {useEffect,Component} from "react";
 import styled from "styled-components";
-import {useDispatch} from "react-redux";
+import {useDispatch,connect} from "react-redux";
 import {setBlurOn,setBlurOff} from "../../redux/system/system.action.js"
 import Button from "../CustomButton";
 
@@ -16,7 +16,7 @@ const Container = styled.div`
     margin-left:-250px;
     margin-top:-100px;
    // background:coral;
-    z-index:100;
+    z-index:100
     text-align:center;
     padding-top:5px;
     display:flex;
@@ -53,37 +53,48 @@ const CancelButton = styled(CustomButton)`
 background:${props => props.theme.alternateBackgroundColor};
 `;
 
-const ConfirmationPopup = (props) => {
-    const {text,confirmHandler,cancelHandler} = props;
-    const dispatch = useDispatch();
-    
-    useEffect(
-        () => {
-            dispatch(setBlurOn());
-        },[]
-    );
 
-    const confirmHandlerWrapper = e => {
-        dispatch(setBlurOff());
-        confirmHandler(e);
+class ConfirmationPopup extends Component
+    {
+        constructor(props)
+            {
+                super(props);
+                props.setBlurOn();
+            }
+
+           confirmHandlerWrapper = (e) => {
+                this.props.setBlurOff();
+                this.props.confirmHandler(e);
+            }
+        
+            cancelHandlerWrapper = (e) => {
+                this.props.setBlurOff();
+                this.props.cancelHandler(e);
+            }
+        
+            render()
+                {
+                    const {text} = this.props;
+                    
+                    return(
+                    <Container>
+                        <div>
+                           <div className="text">{text}</div>
+                            <div className="buttons">
+                                <ConfirmButton onClick={this.confirmHandlerWrapper}>Yes</ConfirmButton>
+                                <CancelButton onClick={this.cancelHandlerWrapper}>No</CancelButton >                      
+                            </div>
+                        </div>    
+                    </Container>
+                    );      
+                }
     }
 
-    const cancelHandlerWrapper = e => {
-        dispatch(setBlurOff());
-        cancelHandler(e);
+    const mapDispatchToProps = dispatch => {
+        return ({
+            setBlurOn:() => dispatch(setBlurOn()),
+            setBlurOff:() => dispatch(setBlurOff()),
+        });
     }
-    return(
-        <Container>
-            <div>
-                <div className="text">{text}</div>
-                <div className="buttons">
-                    <ConfirmButton onClick={confirmHandlerWrapper}>Yes</ConfirmButton>
-                    <CancelButton onClick={cancelHandlerWrapper}>No</CancelButton >                      
-                </div>
-            </div>    
-        </Container>
-    );
-}
+export default connect(null,mapDispatchToProps)(ConfirmationPopup);
 
-
-export default ConfirmationPopup;
