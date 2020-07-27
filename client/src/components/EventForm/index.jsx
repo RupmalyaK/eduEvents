@@ -11,88 +11,6 @@ import Button from "../CustomButton";
 
 import {Container,CustomFormInput,Errors} from "./style.jsx";
 
-
-/*const EventForm = props => {
-    const {isEventFormOpen} = props; 
-    const eventFormControl = useAnimation();
-    const [text , setText] = useState(""); 
-    const [taskTitle, setTaskTitle] = useState("");
-    const [taskTime , setTaskTime] = useState("");
-    const [eventFormOpen , setEventFormOpen] = useState(false);
-    const dispatch = useDispatch(); 
-    const date = useSelector(selectDate);
-    const postingTaskErrors = useSelector(selectpostingTaskError);
-   
-
-    const maxLengthOfTextArea = 120;
-
-    useEffect(() => {
-        if(isEventFormOpen || postingTaskErrors)
-            {
-                openEventFormSequence();
-                return;
-            }
-            closeEventFormSequence();
-
-    },[isEventFormOpen,postingTaskErrors]);
-
-    const openEventFormSequence = async () => {
-       await eventFormControl.start({ y:"20%", opacity:1, transition:{duration:0.4,ease: "easeInOut"} }); 
-   
-      }
-
-      const closeEventFormSequence = async () => {
-       await eventFormControl.start({ y:"109%", opacity:1, transition:{duration:0.4,ease: "easeInOut"} }); 
-      }
-
-
-    const handleWriteTask = e => {
-        setText(e.target.value);
-    }
-
-    const handleTaskSubmit = e => {
-        dispatch(postTaskAsync(date,taskTitle, text,taskTime)); 
-        if(taskTitle.length <= 5 || text.length <= 20 || !taskTime)
-            {
-                return;
-            }
-        setText("");
-        setTaskTitle("");
-        setTaskTime("");
-
-    }
-
-
-    const handleTaskCancel = e => {
-        closeEventFormSequence();
-    }
-
-    const displayErrors = () => {
-        const Errors = postingTaskErrors.map( error =>{
-            return (<span className="error">{error}</span>)
-        }
-        );
-        return Errors;
-    }
-
-
-}
-
-export default EventForm;
-*/
-
-
-/**
- *   const {isEventFormOpen} = props; 
-    const eventFormControl = useAnimation();
-    const [text , setText] = useState(""); 
-    const [taskTitle, setTaskTitle] = useState("");
-    const [taskTime , setTaskTime] = useState("");
-    const [eventFormOpen , setEventFormOpen] = useState(false);
-    const dispatch = useDispatch(); 
-    const date = useSelector(selectDate);
-    const postingTaskErrors = useSelector(selectpostingTaskError);
- */
 class EventForm extends Component {
     constructor(props)
         {
@@ -100,17 +18,14 @@ class EventForm extends Component {
             const maxLengthOfTextArea = 120;
         }
 
-        
-        
         state = {
             text:"",
             taskTitle:"",
             taskTime:"",
-            eventFormOpen:false,
         }
 
         handleWriteTask = e => {
-           // setText(e.target.value);
+        
             this.setState({text:e.target.value});
         }
 
@@ -131,10 +46,17 @@ class EventForm extends Component {
         }
         
         handleTaskCancel = e => {
-           // closeEventFormSequence();
+           this.closeEventFormSequence();
         }
 
+        openEventFormSequence = async () => {
+            await this.props.eventFormControl.start({ y:"20%", opacity:1, transition:{duration:0.4,ease: "easeInOut"} }); 
+           }
 
+        closeEventFormSequence = async () => {
+        await this.props.eventFormControl.start({ y:"109%", opacity:1, transition:{duration:0.4,ease: "easeInOut"} }); 
+        }
+    
         displayErrors = () => {
             const Errors = this.props.postingTaskErrors.map( error =>{
                 return (<span className="error">{error}</span>)
@@ -143,14 +65,23 @@ class EventForm extends Component {
             return Errors;
         }
 
-      
+        
 
         render()
             {
-                const {postingTaskErrors} = this.props;
-                const {taskTitle,text,taskTime} = this.state;
+                const {isEventFormOpen, postingTaskErrors,eventFormControl} = this.props;
+                const {eventFormOpen,taskTitle,text,taskTime} = this.state;
+                console.log(this.state);
+                if(isEventFormOpen || postingTaskErrors)
+                {
+                    this.openEventFormSequence();
+                }
+                else{
+                    this.closeEventFormSequence();
+                }
+               
                 return(
-                    <Container initial={{y:"109%"}} >
+                    <Container initial={{y:"109%"}} animate={eventFormControl}>
                                 <FontAwesomeIcon icon={faCaretUp}/>
                                 {postingTaskErrors ? <Errors>
                                     <h6 className="heading">Error posting Task</h6>
@@ -158,10 +89,10 @@ class EventForm extends Component {
                                 </Errors>:<></>} 
                                 <h4>Post a new task</h4>
                                 <Form.Group controlId="writeTask" style={{marginTop:"10px",border:"5%"}}>
-                                        <CustomFormInput type="text" label="Title" value={taskTitle} setState={this.setTaskTitle}  required /> 
+                                        <CustomFormInput type="text" label="Title" value={taskTitle} setState={value => this.setState({taskTitle:value})}  required /> 
                                         <Form.Label>Write the task (Limit:{this.maxLengthOfTextArea - text.length} more characters)</Form.Label>
                                         <Form.Control as="textarea" rows="3" maxLength={120}  onChange={this.handleWriteTask} style={{height:"200px",marginBottom:"50px"}} requited/>
-                                        <CustomFormInput type="time" label="Time" value={taskTime} setState={this.setTaskTime} required /> 
+                                        <CustomFormInput type="time" label="Time" value={taskTime} setState={value => this.setState({taskTime:value})} required /> 
                                         <div className="buttons" className="d-flex justify-content-center">
                                              <Button onClick= {this.handleTaskSubmit} style={{marginRight:"25px",width:"240px"}}>Post</Button>
                                              <Button onClick= {this.handleTaskCancel} style={{width:"240px"}}>Cancel</Button>
