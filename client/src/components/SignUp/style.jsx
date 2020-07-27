@@ -46,10 +46,16 @@ margin-top:50px;
     }
    
 }
+.errors{
+
+    display:flex;
+    flex-direction:column;
+    margin-bottom:40px;
+}
 .error{
     color:orange;
     transform:translateY(-200);
-    margin-bottom:40px;
+    margin-bottom:2px;
 }
 `;
 

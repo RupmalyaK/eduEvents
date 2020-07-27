@@ -79,7 +79,7 @@ const eventsRoutes = (pathStr,app,admin) => {
 
 
 export default eventsRoutes;
-
-/*(async () => {
+/*
+(async () => {
     await EventModel.deleteMany({});
 })();*/

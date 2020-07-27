@@ -15,7 +15,7 @@ class EventForm extends Component {
     constructor(props)
         {
             super(props);
-            const maxLengthOfTextArea = 120;
+            
         }
 
         state = {
@@ -24,15 +24,16 @@ class EventForm extends Component {
             taskTime:"",
         }
 
+
         handleWriteTask = e => {
         
             this.setState({text:e.target.value});
         }
 
         handleTaskSubmit = e => {
-            const {date} = this.props.date;
+            const {date,postTask} = this.props;
             const {text,taskTitle,taskTime,eventFormOpen} = this.state;
-            this.props.postTaskAsync(date,taskTitle, text,taskTime); 
+            postTask(date,taskTitle, text,taskTime); 
             if(taskTitle.length <= 5 || text.length <= 20 || !taskTime)
                 {
                     return;
@@ -41,7 +42,8 @@ class EventForm extends Component {
                 text:"",
                 taskTitle:"",
                 taskTime:"",
-            });    
+            });   
+            this.closeEventFormSequence();
       
         }
         
@@ -62,24 +64,23 @@ class EventForm extends Component {
                 return (<span className="error">{error}</span>)
             }
             );
-            return Errors;
+           return Errors;
+      
         }
-
-        
 
         render()
             {
                 const {isEventFormOpen, postingTaskErrors,eventFormControl} = this.props;
-                const {eventFormOpen,taskTitle,text,taskTime} = this.state;
-                console.log(this.state);
-                if(isEventFormOpen || postingTaskErrors)
+                const {taskTitle,text,taskTime} = this.state;
+                const maxLengthOfTextArea = 120;
+                if(isEventFormOpen)
                 {
                     this.openEventFormSequence();
                 }
                 else{
                     this.closeEventFormSequence();
                 }
-               
+               console.log("MAX LENGTH:", this.maxLengthOfTextArea)
                 return(
                     <Container initial={{y:"109%"}} animate={eventFormControl}>
                                 <FontAwesomeIcon icon={faCaretUp}/>
@@ -90,7 +91,7 @@ class EventForm extends Component {
                                 <h4>Post a new task</h4>
                                 <Form.Group controlId="writeTask" style={{marginTop:"10px",border:"5%"}}>
                                         <CustomFormInput type="text" label="Title" value={taskTitle} setState={value => this.setState({taskTitle:value})}  required /> 
-                                        <Form.Label>Write the task (Limit:{this.maxLengthOfTextArea - text.length} more characters)</Form.Label>
+                                        <Form.Label>Write the task (Limit:{maxLengthOfTextArea - text.length} more characters)</Form.Label>
                                         <Form.Control as="textarea" rows="3" maxLength={120}  onChange={this.handleWriteTask} style={{height:"200px",marginBottom:"50px"}} requited/>
                                         <CustomFormInput type="time" label="Time" value={taskTime} setState={value => this.setState({taskTime:value})} required /> 
                                         <div className="buttons" className="d-flex justify-content-center">

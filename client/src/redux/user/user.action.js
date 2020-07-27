@@ -66,6 +66,7 @@ export const signUpFailure = (error) => {
 }
 
 export const signUpAsync = (userInfo) => {
+    console.log("USER INFOS", userInfo);
     return async dispatch => {
             dispatch(signUpStart()); 
             const {email ,password, displayName, role} = userInfo;

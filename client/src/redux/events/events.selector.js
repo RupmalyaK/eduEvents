@@ -15,4 +15,6 @@ export const selectPostingTaskError  = createSelector(selectEvents, event => eve
 
 export const selectDate = createSelector(selectEvents , (events) => events.date);
 
+export const selectIsEventFormOpen = createSelector(selectEvents , (events) => events.isEventFormOpen);
+
 

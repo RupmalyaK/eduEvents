@@ -52,6 +52,16 @@ const postTaskSuccess = (tasks,date) => {
     return {type:actionTypes.POST_TASK_SUCCESS, payLoad:{tasks,date}}; 
 }
 
+
+export const setEventFormOpen = () => {
+    return {type:actionTypes.SET_EVENT_FORM_OPEN};
+}
+
+export const setEventFormClose = () => {
+    return {type:actionTypes.SET_EVENT_FORM_CLOSE};
+}
+
+
 export const postTaskAsync =  (date, taskTitle, task, time) => {
     return async (dispatch,getState) => {
         dispatch(postTaskStart()); 
@@ -75,7 +85,9 @@ export const postTaskAsync =  (date, taskTitle, task, time) => {
                     }
                 }
             );
-            dispatch(postTaskSuccess(tasks,date))
+
+            dispatch(postTaskSuccess(tasks,date));
+            dispatch(setEventFormClose());
         }
         catch(error)
             {
@@ -84,7 +96,7 @@ export const postTaskAsync =  (date, taskTitle, task, time) => {
     }
 }
 
-
 export const clearTasks = () => {
     return {type:actionTypes.CLEAR_TASK};
 }
+

@@ -7,6 +7,7 @@ const INITIAL_STATE = {
     date:null,
     isPostingTask:false,
     postingTaskError:null,
+    isEventFormOpen:false,
 };
 
 const eventsReducer = (state = INITIAL_STATE, action) => {
@@ -31,7 +32,11 @@ const eventsReducer = (state = INITIAL_STATE, action) => {
                       return {...state,isPostingTask:false, postingTaskError:null,tasks:newTasks, date:newDate};   
                       
              case actionTypes.CLEAR_TASK:
-                        return{...state,tasks:[]};         
+                        return{...state,tasks:[]}; 
+             case actionTypes.SET_EVENT_FORM_OPEN:
+                        return {...state,isEventFormOpen:true};
+             case actionTypes.SET_EVENT_FORM_CLOSE:
+                        return {...state,isEventFormOpen:false};                              
             default: return state;
         }
 }
